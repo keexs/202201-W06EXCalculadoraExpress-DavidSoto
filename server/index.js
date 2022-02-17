@@ -1,7 +1,9 @@
 require("dotenv").config();
 const debug = require("debug")("calculator:*");
 const chalk = require("chalk");
-const app = require("../index");
+const express = require("express");
+
+const app = express();
 
 const initializeServer = (port) =>
     new Promise((resolve, reject) => {
@@ -11,9 +13,9 @@ const initializeServer = (port) =>
             resolve();
         });
 
-        app.on("error", (error) => {
+        server.on("error", (error) => {
             debug(`Error on server ${port}: ${error.message}`);
-            reject(error);
+            reject(error.message);
         });
     });
 
