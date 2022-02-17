@@ -1,11 +1,8 @@
 require("dotenv").config();
-const express = require("express");
-const morgan = require("morgan");
+const debug = require("debug")("calculator:*");
 const server = require("./server/index");
-const debug = require("debug")("calculator:server");
 const initializeServer = require("./server/index");
 
-const app = express();
 const port = process.env.SERVER_PORT || 6969;
 
 (async () => {
@@ -16,8 +13,4 @@ const port = process.env.SERVER_PORT || 6969;
     }
 })();
 
-app.use(morgan("dev"));
-app.use(express.json());
-
 module.exports = server;
-module.exports = port;

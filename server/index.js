@@ -1,15 +1,18 @@
 require("dotenv").config();
 const debug = require("debug")("calculator:*");
-const chalk = require("chalk");
 const express = require("express");
+const morgan = require("morgan");
 
 const app = express();
+const port = process.env.SERVER_PORT || 6969;
 
-const initializeServer = (port) =>
+app.use(morgan("dev"));
+app.use(express.json());
+
+const initializeServer = () =>
     new Promise((resolve, reject) => {
         const server = app.listen(port, () => {
-            debug(chalk.redBright(`Server is up => http://localhost:${port}`));
-
+            debug(`Server is up => http://localhost:${port}`);
             resolve();
         });
 
@@ -18,5 +21,10 @@ const initializeServer = (port) =>
             reject(error.message);
         });
     });
+
+app.use((req, res, next) => {
+    debug(`A request has arrived to ${req.url}`);
+    next();
+});
 
 module.exports = initializeServer();
